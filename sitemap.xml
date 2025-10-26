@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
-  
+
   <!-- Home Page -->
   <url>
     <loc>https://lizu963091.github.io/Baahubali-The-Epic-Download/</loc>
@@ -8,21 +8,37 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-  
-  <!-- Download Page -->
+
+  <!-- Download Section -->
   <url>
     <loc>https://lizu963091.github.io/Baahubali-The-Epic-Download/#download-section</loc>
     <lastmod>2025-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-  
-  <!-- Story Summary -->
+
+  <!-- Story Summary Section -->
   <url>
     <loc>https://lizu963091.github.io/Baahubali-The-Epic-Download/#story-summary</loc>
     <lastmod>2025-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
+
+  <!-- Characters Section -->
+  <url>
+    <loc>https://lizu963091.github.io/Baahubali-The-Epic-Download/#main-characters</loc>
+    <lastmod>2025-10-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Themes & Highlights Section -->
+  <url>
+    <loc>https://lizu963091.github.io/Baahubali-The-Epic-Download/#themes-highlights</loc>
+    <lastmod>2025-10-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>
