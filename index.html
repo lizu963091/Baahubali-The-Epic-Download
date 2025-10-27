@@ -37,20 +37,20 @@
 <script>
   // ---------------- Thumbnail Overlay ----------------
   const THUMBNAIL_URLS = [
-    {time:0, url:"https://via.placeholder.com/640x360/000000/FFFFFF?text=0s"},
+    {time:00:00:00, url:"https://via.placeholder.com/640x360/000000/FFFFFF?text=0s"},
     {time:10, url:"https://via.placeholder.com/640x360/111111/FFFFFF?text=10s"},
     {time:20, url:"https://via.placeholder.com/640x360/222222/FFFFFF?text=20s"},
     {time:30, url:"https://via.placeholder.com/640x360/333333/FFFFFF?text=30s"},
   ];
 
   // ---------------- Video Duration ----------------
-  const VIDEO_DURATION = 8916; // seconds
+  const VIDEO_DURATION = 2:28:36; // seconds
 
   // ---------------- Loader ----------------
   const LOADER_TIME = 5000; // milliseconds
 
   // ---------------- Smartlink Ad ----------------
-  const SMARTLINK_URL = "https://example.com/your-ad-url";
+  const SMARTLINK_URL = "https://otieu.com/4/10084062";
 
   // ---------------- Blogger Feed ----------------
   const BLOG_FEED_URL = "https://freemovie4u.me/feeds/posts/default?alt=json-in-script";
@@ -99,11 +99,11 @@
     <div class="btn" id="playPause">&#9658;</div>
     <div class="btn" id="next10">10s&#9654;&#9654;</div>
     <div class="btn" id="muteBtn">🔊</div>
-    <div class="time" id="currentTime">00:00</div>
+    <div class="time" id="currentTime">00:00:00</div>
     <div class="progress-container" id="progressContainer">
       <div class="progress" id="progress"></div>
     </div>
-    <div class="time" id="duration">00:00</div>
+    <div class="time" id="duration">00:00:00</div>
     <div class="btn" id="ccBtn">CC</div>
     <div class="btn" id="settingsBtn">⚙️</div>
     <div class="btn" id="fullscreenBtn">⛶</div>
@@ -187,8 +187,8 @@ let playing=false, muted=false, currentTime=0;
 
 /* ================= INITIAL SETUP ================= */
 thumbnail.src = THUMBNAIL_URLS[0].url;
-durationElem.textContent = VIDEO_DURATION<10?'00:0'+VIDEO_DURATION:'00:'+VIDEO_DURATION;
-currentTimeElem.textContent = "00:00";
+durationElem.textContent = VIDEO_DURATION<10?'00:00:00'+VIDEO_DURATION:'00:'+VIDEO_DURATION;
+currentTimeElem.textContent = "00:00:00";
 
 /* ================= BLOGGER FEED ================= */
 function loadPostsCallback(data){
@@ -225,7 +225,7 @@ function loadPostsCallback(data){
 })();
 
 /* ================= FUNCTIONS ================= */
-function formatTime(sec){return sec<10?'00:0'+sec:'00:'+sec;}
+function formatTime(sec){return sec<10?'00:00:00'+sec:'00:'+sec;}
 function updateThumbnail(){
   THUMBNAIL_URLS.forEach(t=>{ if(currentTime>=t.time) thumbnail.src=t.url; });
 }
@@ -241,7 +241,7 @@ function resetPlayer(){
   playing=false;
   currentTime=0;
   progress.style.width='0%';
-  currentTimeElem.textContent="00:00";
+  currentTimeElem.textContent="00:00:00";
   thumbnail.src = THUMBNAIL_URLS[0].url;
   thumbnail.style.display='block';
   playBtn.style.display='block';
