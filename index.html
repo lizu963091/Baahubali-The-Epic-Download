@@ -32,19 +32,18 @@
 <body>
 <div class="container">
       <h1>Download Baahubali The Epic Full Movie</h1>
-
-     <!-- ================== CONFIGURATION ================== -->
+<!-- ================== CONFIGURATION ================== -->
 <script>
   // ---------------- Thumbnail Overlay ----------------
   const THUMBNAIL_URLS = [
-    {time:00:00:00, url:"https://via.placeholder.com/640x360/000000/FFFFFF?text=0s"},
-    {time:10, url:"https://via.placeholder.com/640x360/111111/FFFFFF?text=10s"},
-    {time:20, url:"https://via.placeholder.com/640x360/222222/FFFFFF?text=20s"},
-    {time:30, url:"https://via.placeholder.com/640x360/333333/FFFFFF?text=30s"},
+    {time:0, url:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjSjH_NCXWY3UYFtStmg_26Lb2mtmD85Rhf0QEpZefKP12DNWCkfmSH41oxAkclM_348O8uDkdGx2m-uKi_elysQOZtBbjsSuTkzEecyhxZy6DyZnLXL7eTcQOx8ssiD57TNedC2GepjXk5390F81mqN-9lwKGBkua5vLX64JNwOAIhaMWVyO6r-a-K9JUH/s1279/WhatsApp%20Image%202025-10-26%20at%2011.12.45%20PM.jpeg"},
+    {time:2000, url:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjaRBcR2ZT1b7eJM1ZRAsIvqTfDWmp_pPs20xzQ5Q575yJAkVh_iPE9Bxp0dt6icLLixNthzeKJ5psI3SxMy-xAhv94nCACRVHsEUuIfQrU2DEpyDwGbbcwLpoKuq7E7IyFblGno0_b9_tqk35wZgxpxcIrfZG8BGMj84I3n9wLV5vevAhrmh10AiLQ0gCg/s1600/WhatsApp%20Image%202025-10-26%20at%2011.12.25%20PM%20%281%29.jpeg"},
+    {time:4000, url:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj6n6Y5V7dfNwVcHV1_jsrf9piUpTo98ulBmyIV3Ep0LpBtT_TAvgyjmHUVnJ_cpBGzElU7qa_2BXzASWZYFVNHPqlzDY-4Rn3VBNc1o8WjdkzjUdW-STRg-bVa3Ev2qaVqdeSBRRrBOEDiecMfD-Njrz35yahJ1IyFVpLlo9zep9CtD83G-M1-n-8lzXoF/s1600/WhatsApp%20Image%202025-10-26%20at%2011.12.25%20PM.jpeg"},
+    {time:6000, url:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgcD6h415bEXnmlxJZuYwXtVeZ_-vbdVwj5hzamImxLAnHh2PoX0p2PTyW7Bo_9e6xImvEktwaekXBkLtN9uiJM3jN5O8aQczOeG9NA4_k_vfn8snsCPNCweEpGaMYhfblMqeDhr_fFfGsnCLqXx2OH_2lOVrpDWZHmAkNVbcFUlHjCzhc4OXk2MkHKAPHm/s1600/WhatsApp%20Image%202025-10-26%20at%2011.12.21%20PM.jpeg"},
   ];
 
   // ---------------- Video Duration ----------------
-  const VIDEO_DURATION = 2:28:36; // seconds
+  const VIDEO_DURATION = 8916; // seconds (changeable)
 
   // ---------------- Loader ----------------
   const LOADER_TIME = 5000; // milliseconds
@@ -103,7 +102,7 @@
     <div class="progress-container" id="progressContainer">
       <div class="progress" id="progress"></div>
     </div>
-    <div class="time" id="duration">00:00:00</div>
+    <div class="time" id="duration">00:00:30</div>
     <div class="btn" id="ccBtn">CC</div>
     <div class="btn" id="settingsBtn">⚙️</div>
     <div class="btn" id="fullscreenBtn">⛶</div>
@@ -115,7 +114,7 @@
 <style>
 body{background:#000;margin:0;font-family:sans-serif;}
 .player{position:relative;width:640px;height:360px;background:#000;border-radius:8px;overflow:hidden;margin:20px auto;}
-.thumbnail{position:absolute;width:100%;height:100%;object-fit:cover;display:block;}
+.thumbnail{position:absolute;width:100%;height:100%;object-fit:cover;}
 
 /* ================= Play Button Triangle ================= */
 .play-btn{
@@ -141,6 +140,8 @@ body{background:#000;margin:0;font-family:sans-serif;}
 /* Loader */
 .loader{position:absolute;top:50%;left:50%;width:60px;height:60px;margin:-30px 0 0 -30px;border:6px solid #fff;border-top:6px solid rgba(255,255,255,0.2);border-radius:50%;animation:spin 1s linear infinite;display:none;z-index:2;}
 @keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+
+/* Other CSS */
 .message{position:absolute;top:50%;width:100%;text-align:center;color:#fff;font-size:18px;display:none;transform:translateY(-50%);z-index:2;}
 .info-btn{position:absolute;top:10px;right:10px;z-index:5;color:#fff;background:rgba(0,0,0,0.5);padding:5px 8px;border-radius:50%;cursor:pointer;}
 .info-bar{position:absolute;top:40px;right:10px;background:rgba(0,0,0,0.95);padding:10px;border-radius:6px;z-index:5;min-width:220px;color:#fff; max-height:220px; overflow-y:auto;}
@@ -187,8 +188,8 @@ let playing=false, muted=false, currentTime=0;
 
 /* ================= INITIAL SETUP ================= */
 thumbnail.src = THUMBNAIL_URLS[0].url;
-durationElem.textContent = VIDEO_DURATION<10?'00:00:00'+VIDEO_DURATION:'00:'+VIDEO_DURATION;
-currentTimeElem.textContent = "00:00:00";
+currentTimeElem.textContent = formatTime(currentTime);
+durationElem.textContent = formatTime(VIDEO_DURATION);
 
 /* ================= BLOGGER FEED ================= */
 function loadPostsCallback(data){
@@ -225,10 +226,20 @@ function loadPostsCallback(data){
 })();
 
 /* ================= FUNCTIONS ================= */
-function formatTime(sec){return sec<10?'00:00:00'+sec:'00:'+sec;}
+function formatTime(sec){
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    const s = sec % 60;
+    const hh = h < 10 ? '0'+h : h;
+    const mm = m < 10 ? '0'+m : m;
+    const ss = s < 10 ? '0'+s : s;
+    return hh + ':' + mm + ':' + ss;
+}
+
 function updateThumbnail(){
   THUMBNAIL_URLS.forEach(t=>{ if(currentTime>=t.time) thumbnail.src=t.url; });
 }
+
 function startSimulation(){
   thumbnail.style.display='block';
   playBtn.style.display='none';
@@ -237,11 +248,12 @@ function startSimulation(){
   controls.style.display='flex';
   setTimeout(()=>{ loader.style.display='none'; message.style.display='block'; }, LOADER_TIME);
 }
+
 function resetPlayer(){
   playing=false;
   currentTime=0;
   progress.style.width='0%';
-  currentTimeElem.textContent="00:00:00";
+  currentTimeElem.textContent=formatTime(currentTime);
   thumbnail.src = THUMBNAIL_URLS[0].url;
   thumbnail.style.display='block';
   playBtn.style.display='block';
@@ -295,7 +307,6 @@ document.addEventListener('click',(e)=>{
   }
 });
 document.addEventListener('visibilitychange', ()=>{if(document.hidden){resetPlayer();}});
-  
 </script>
 
 
