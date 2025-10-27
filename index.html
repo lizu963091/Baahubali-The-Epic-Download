@@ -32,32 +32,273 @@
 <body>
 <div class="container">
 
-      <!-- Video Player Simulation -->
-    <h2>Baahubali The Epic Full Movie Watch & Download HD</h2>
-    <div style="margin:20px 0;text-align:center;">
-        <a href="https://www.freemovie4u.me/2025/10/baahubali-epic-full-movie-watch.html" target="_blank" style="text-decoration:none;">
-            <div style="background:black;border-radius:12px;display:inline-block;max-width:640px;overflow:hidden;position:relative;width:100%;">
-                <div style="align-items:center;display:flex;height:360px;justify-content:center;position:relative;width:100%;">
-                    <div style="color:white;cursor:pointer;font-size:60px;text-shadow: rgba(0,0,0,0.7) 2px 2px 10px;">▶</div>
-                    <div style="background: rgba(0,0,0,0.5); border-radius:50%; color:white; cursor:pointer; font-size:20px; font-weight:bold; height:28px; line-height:28px; position:absolute; right:10px; top:10px; width:28px; text-align:center;">i</div>
-                </div>
-                <div style="background: rgba(30,30,30,0.9); bottom:0px; color:white; font-size:14px; padding:5px 10px; position:absolute; width:100%;">
-                    <div style="align-items:center;display:flex;justify-content:space-between;">
-                        <span>0:00 / 2:36:28</span>
-                        <div style="background: rgb(68,68,68); border-radius:2px; flex:1; height:4px; margin:0px 10px; position:relative;">
-                            <div style="background: rgb(229,9,20); border-radius:2px; height:100%; width:0%;"></div>
-                        </div>
-                        <div style="align-items:center;display:flex;gap:8px;">
-                            <span style="cursor:pointer;">🔊</span>
-                            <span style="cursor:pointer;">⏮</span>
-                            <span style="cursor:pointer;">⏭</span>
-                            <span style="cursor:pointer;">🔳</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
+     <!-- ================== CONFIGURATION ================== -->
+<script>
+  // ---------------- Thumbnail Overlay ----------------
+  const THUMBNAIL_URLS = [
+    {time:0, url:"https://via.placeholder.com/640x360/000000/FFFFFF?text=0s"},
+    {time:10, url:"https://via.placeholder.com/640x360/111111/FFFFFF?text=10s"},
+    {time:20, url:"https://via.placeholder.com/640x360/222222/FFFFFF?text=20s"},
+    {time:30, url:"https://via.placeholder.com/640x360/333333/FFFFFF?text=30s"},
+  ];
+
+  // ---------------- Video Duration ----------------
+  const VIDEO_DURATION = 30; // seconds
+
+  // ---------------- Loader ----------------
+  const LOADER_TIME = 5000; // milliseconds
+
+  // ---------------- Smartlink Ad ----------------
+  const SMARTLINK_URL = "https://example.com/your-ad-url";
+
+  // ---------------- Blogger Feed ----------------
+  const BLOG_FEED_URL = "https://freemovie4u.me/feeds/posts/default?alt=json-in-script";
+</script>
+
+<!-- ================== PLAYER HTML ================== -->
+<div class="player" id="player">
+  <!-- Thumbnail & Play Button -->
+  <img src="" alt="Thumbnail" class="thumbnail" id="thumbnail">
+  <div class="play-btn" id="playBtn">&#9658;</div>
+  <div class="loader" id="loader"></div>
+
+  <!-- Message -->
+  <div class="message" id="message">
+    No internet connection. Try again.
+    <br>
+    <button id="retryBtn" style="margin-top:10px; padding:5px 10px; cursor:pointer;">Refresh</button>
+  </div>
+
+  <!-- Info Button -->
+  <div class="info-btn" id="infoBtn">i</div>
+  <div class="info-bar" id="infoBar" style="display:none;">
+    <div class="cards" id="cardsContainer">Loading posts...</div>
+  </div>
+
+  <!-- Settings Popup -->
+  <div class="settings-popup" id="settingsPopup" style="display:none;">
+    <h4>Settings</h4>
+    <div><label><input type="checkbox" id="ccToggle"> CC</label></div>
+    <div>
+      <label>Quality:
+        <select id="qualitySelect">
+          <option value="144p">144p</option>
+          <option value="240p">240p</option>
+          <option value="360p">360p</option>
+          <option value="480p">480p</option>
+          <option value="720p">720p</option>
+        </select>
+      </label>
     </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls" id="controls">
+    <div class="btn" id="prev10">&#9664;&#9664;10s</div>
+    <div class="btn" id="playPause">&#9658;</div>
+    <div class="btn" id="next10">10s&#9654;&#9654;</div>
+    <div class="btn" id="muteBtn">🔊</div>
+    <div class="time" id="currentTime">00:00</div>
+    <div class="progress-container" id="progressContainer">
+      <div class="progress" id="progress"></div>
+    </div>
+    <div class="time" id="duration">00:00</div>
+    <div class="btn" id="ccBtn">CC</div>
+    <div class="btn" id="settingsBtn">⚙️</div>
+    <div class="btn" id="fullscreenBtn">⛶</div>
+  </div>
+</div>
+
+
+<!-- ================== PLAYER CSS ================== -->
+<style>
+body{background:#000;margin:0;font-family:sans-serif;}
+.player{position:relative;width:640px;height:360px;background:#000;border-radius:8px;overflow:hidden;margin:20px auto;}
+.thumbnail{position:absolute;width:100%;height:100%;object-fit:cover;display:block;}
+
+/* ================= Play Button Triangle ================= */
+.play-btn{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:60px;
+  color:#fff;
+  cursor:pointer;
+  opacity:0.8;
+  z-index:2;
+  width:auto;
+  height:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:none;
+  border-radius:0;
+  background:none;
+}
+
+/* Loader */
+.loader{position:absolute;top:50%;left:50%;width:60px;height:60px;margin:-30px 0 0 -30px;border:6px solid #fff;border-top:6px solid rgba(255,255,255,0.2);border-radius:50%;animation:spin 1s linear infinite;display:none;z-index:2;}
+@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+.message{position:absolute;top:50%;width:100%;text-align:center;color:#fff;font-size:18px;display:none;transform:translateY(-50%);z-index:2;}
+.info-btn{position:absolute;top:10px;right:10px;z-index:5;color:#fff;background:rgba(0,0,0,0.5);padding:5px 8px;border-radius:50%;cursor:pointer;}
+.info-bar{position:absolute;top:40px;right:10px;background:rgba(0,0,0,0.95);padding:10px;border-radius:6px;z-index:5;min-width:220px;color:#fff; max-height:220px; overflow-y:auto;}
+.cards{display:flex;flex-direction:column;}
+.info-card {position:relative;background:#fff;color:#000;margin:5px 0;padding:5px;border-radius:6px;display:flex;align-items:center;cursor:pointer;text-decoration:none;}
+.info-card img {width:60px;height:40px;object-fit:cover;border-radius:4px;margin-right:10px;}
+.settings-popup{position:absolute;top:50px;right:10px;background:rgba(0,0,0,0.95);padding:10px;border-radius:6px;color:#fff;z-index:6;min-width:180px;}
+.controls{position:absolute;bottom:0;width:100%;background:rgba(20,20,20,0.8);display:flex;align-items:center;padding:5px 10px;box-sizing:border-box;height:40px;}
+.btn{color:#fff;font-size:18px;margin-right:10px;cursor:pointer;user-select:none;}
+.progress-container{flex:1;margin:0 10px;background:#444;height:5px;border-radius:3px;cursor:pointer;position:relative;}
+.progress{background:red;height:100%;width:0%;border-radius:3px;}
+.time{color:#fff;font-size:12px;min-width:50px;text-align:center;}
+</style>
+
+
+<!-- ================== PLAYER JS ================== -->
+<script>
+/* ================= VARIABLES ================= */
+const player = document.getElementById('player');
+const thumbnail = document.getElementById('thumbnail');
+const playBtn = document.getElementById('playBtn');
+const loader = document.getElementById('loader');
+const message = document.getElementById('message');
+const retryBtn = document.getElementById('retryBtn');
+const controls = document.getElementById('controls');
+const playPause = document.getElementById('playPause');
+const progress = document.getElementById('progress');
+const currentTimeElem = document.getElementById('currentTime');
+const durationElem = document.getElementById('duration');
+const prev10 = document.getElementById('prev10');
+const next10 = document.getElementById('next10');
+const muteBtn = document.getElementById('muteBtn');
+const fullscreenBtn = document.getElementById('fullscreenBtn');
+const ccBtn = document.getElementById('ccBtn');
+const settingsBtn = document.getElementById('settingsBtn');
+const infoBtn = document.getElementById('infoBtn');
+const infoBar = document.getElementById('infoBar');
+const cardsContainer = document.getElementById('cardsContainer');
+const settingsPopup = document.getElementById('settingsPopup');
+const ccToggle = document.getElementById('ccToggle');
+const qualitySelect = document.getElementById('qualitySelect');
+
+let playing=false, muted=false, currentTime=0;
+
+/* ================= INITIAL SETUP ================= */
+thumbnail.src = THUMBNAIL_URLS[0].url;
+durationElem.textContent = VIDEO_DURATION<10?'00:0'+VIDEO_DURATION:'00:'+VIDEO_DURATION;
+currentTimeElem.textContent = "00:00";
+
+/* ================= BLOGGER FEED ================= */
+function loadPostsCallback(data){
+  cardsContainer.innerHTML='';
+  try{
+    const entries = data.feed.entry.slice(0,5);
+    entries.forEach(post=>{
+      const a = document.createElement('a');
+      const link = post.link.find(l=>l.rel==="alternate");
+      a.href = link ? link.href : "#";
+      a.target="_blank";
+      a.className = "info-card";
+
+      let thumbUrl = "https://via.placeholder.com/60x40/FFFFFF/000000?text=No+Image";
+      if(post.media$thumbnail) thumbUrl = post.media$thumbnail.url;
+      const img = document.createElement('img');
+      img.src = thumbUrl;
+      a.appendChild(img);
+
+      const span = document.createElement('span');
+      span.textContent = post.title.$t;
+      a.appendChild(span);
+
+      cardsContainer.appendChild(a);
+    });
+  } catch(err){
+    cardsContainer.innerHTML = "Failed to load posts.";
+  }
+}
+(function(){
+  const script = document.createElement('script');
+  script.src = BLOG_FEED_URL + "&callback=loadPostsCallback";
+  document.body.appendChild(script);
+})();
+
+/* ================= FUNCTIONS ================= */
+function formatTime(sec){return sec<10?'00:0'+sec:'00:'+sec;}
+function updateThumbnail(){
+  THUMBNAIL_URLS.forEach(t=>{ if(currentTime>=t.time) thumbnail.src=t.url; });
+}
+function startSimulation(){
+  thumbnail.style.display='block';
+  playBtn.style.display='none';
+  message.style.display='none';
+  loader.style.display='block';
+  controls.style.display='flex';
+  setTimeout(()=>{ loader.style.display='none'; message.style.display='block'; }, LOADER_TIME);
+}
+function resetPlayer(){
+  playing=false;
+  currentTime=0;
+  progress.style.width='0%';
+  currentTimeElem.textContent="00:00";
+  thumbnail.src = THUMBNAIL_URLS[0].url;
+  thumbnail.style.display='block';
+  playBtn.style.display='block';
+  loader.style.display='none';
+  message.style.display='none';
+  infoBar.style.display='none';
+  settingsPopup.style.display='none';
+}
+
+/* ================= EVENT LISTENERS ================= */
+playBtn.addEventListener('click', ()=>{
+  startSimulation();
+  playPause.innerHTML='&#10074;&#10074;';
+  playing=true;
+});
+playPause.addEventListener('click', ()=>{
+  playing=!playing;
+  playPause.innerHTML = playing?'&#10074;&#10074;':'&#9658;';
+});
+retryBtn.addEventListener('click', ()=>{window.open(SMARTLINK_URL,'_blank');});
+prev10.addEventListener('click', ()=>{
+  currentTime=Math.max(0,currentTime-10);
+  currentTimeElem.textContent = formatTime(currentTime);
+  updateThumbnail();
+  progress.style.width=(currentTime/VIDEO_DURATION*100)+'%';
+});
+next10.addEventListener('click', ()=>{
+  currentTime=Math.min(VIDEO_DURATION,currentTime+10);
+  currentTimeElem.textContent = formatTime(currentTime);
+  updateThumbnail();
+  progress.style.width=(currentTime/VIDEO_DURATION*100)+'%';
+});
+muteBtn.addEventListener('click', ()=>{muted=!muted; muteBtn.textContent = muted?'🔇':'🔊';});
+fullscreenBtn.addEventListener('click', ()=>{if(!document.fullscreenElement){player.requestFullscreen();}else{document.exitFullscreen();}});
+ccBtn.addEventListener('click', ()=>{ccToggle.checked=!ccToggle.checked;});
+settingsBtn.addEventListener('click', ()=>{settingsPopup.style.display=(settingsPopup.style.display==='block')?'none':'block';});
+infoBtn.addEventListener('click', ()=>{infoBar.style.display=(infoBar.style.display==='block')?'none':'block';});
+const progressContainer = document.getElementById('progressContainer');
+progressContainer.addEventListener('click',(e)=>{
+  const rect = progressContainer.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  currentTime = Math.floor((x/rect.width)*VIDEO_DURATION);
+  currentTimeElem.textContent = formatTime(currentTime);
+  updateThumbnail();
+  progress.style.width=(currentTime/VIDEO_DURATION*100)+'%';
+});
+document.addEventListener('click',(e)=>{
+  if(e.target!==infoBtn && e.target!==settingsBtn){
+    if(infoBar.style.display==='block') infoBar.style.display='none';
+    if(settingsPopup.style.display==='block') settingsPopup.style.display='none';
+  }
+});
+document.addEventListener('visibilitychange', ()=>{if(document.hidden){resetPlayer();}});
+  
+</script>
+
+
+
  <!-- download button section -->
     <div class="download-buttons">
   <h3>Download Baahubali The Epic Full Movie</h3>
